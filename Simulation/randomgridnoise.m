@@ -1,10 +1,13 @@
-%parameters for generating the library images
+%parameters for generating the library images. We will move this to a text 
+%configuration file
 z = 0; NA = 1.40; n0 = 1.52; n=1.49; n1 = 1.0; d0 = []; d = 0.01; d1 = []; 
-lamem = 0.57; mag = 100; focus = 0.6; atf = []; ring = []; pixel = 10; pic = 0; be_res = [5]; 
-al_res = [5]; nn = [10];
+lamem = 0.57; mag = 100; focus = 0.6; atf = []; ring = []; pixel = 10; pic = 0; 
+be_res = [5]; al_res = [5]; nn = [10];
 
+%Undecided about where to leave this
 model = PatternGeneration(z,NA,n0,n,n1,d0,d,d1,lamem,mag,focus,atf,ring,pixel,nn,be_res,al_res,pic);
 bck = Disk((size(model.mask,1)-1)/2);
+
 
 %inputs = the number of photons to introduce into the system
 %inputs = rand(1,900000);
@@ -32,7 +35,8 @@ for mapval = 183:imageno
         finalimg1 = zeros(sidelen+10);
         outfile = sprintf('N5deg/noise-%i-orientation_stats-%i-%i.txt',[poissval;mapval;counts]);
         
-        %convert predicted image into probability map
+        %convert predicted image into probability map.(Why is this in the loop)
+        %Turn into a function
         for i=1:sidelen
             for j=1:sidelen
                 rsum=rsum + model.mask(i,j,mapval);
@@ -41,7 +45,8 @@ for mapval = 183:imageno
             end
         end
         
-        %convert probability mask back into image(depricated for now since we know it works)
+        %convert probability mask back into image
+        %(Turn into auxiliary function)
         %for i=1:sidelen
         %    for j=1:sidelen
         %        rlen = j+((i-1)*sidelen)
@@ -51,11 +56,13 @@ for mapval = 183:imageno
         %    end
         %end
         
+        %open up a file for each run, This we are fixing. Make one big file now%
         linfile = fopen(outfile,'w');
         fprintf(linfile, 'Theta = %3i \t Phi = %3i\n',[thetaval;phival]);
         fprintf(linfile, 'photons \t x_coord \t y_coord \t theta \t phi \t error\n');
         
-        
+        %use photons and probability map to figure out which pixel in the final
+        %image to increment by one
         while lend < limit
 	    inputs = rand(1,step);
             for i=1:step
@@ -78,11 +85,16 @@ for mapval = 183:imageno
 	      continue
 	    end
 	    
+      
+      %crate background noise using poisson statistics, add to image
             poissimg = poissrnd(poissval,sidelen+10,sidelen+10);
             finalimg1(6:end-5,6:end-5) = finalimg1(6:end-5,6:end-5) + finalimg;
             finalimg1 = finalimg1 + poissimg;
             finalimg1 = finalimg1/max(max(finalimg));
             
+      %fit random pattern to data. If a match is found, record it. Otherwise
+      %Continue
+      %need a way to handle 
 	    [err, bim, cim, sim, xc, yc, bc, cc, sc, len, imm] = FindPattern(finalimg1, model.mask, bck, bck);
 	    if size(xc) ~= 0
                 errarray = double(err(yc(1), xc(1)));
@@ -94,9 +106,10 @@ for mapval = 183:imageno
             end
             
             if size(xc) == 0
-		continue
-	    end
+		             continue
+	          end
 	    
+            %Once a match in terms of angle and position has been achieved, stop
             if thetadeg == thetaval && phideg == phival && xc(1) == centre && yc(1) == centre
                 break
             end
