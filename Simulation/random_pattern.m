@@ -1,4 +1,14 @@
 function finalimg = random_pattern(startpattern, step, imlength)
+%use photons and probability map to figure out which pixel in the final
+%image to increment by one until .
+%Inputs:
+%startpattern: array the same size as the predicted images
+%step: the number of photons to add to the image
+%imlength: the 1D probability array
+%Output:
+%finalimg:the starting array with 'step' number of photons randomly added
+%following the probability distribution
+
 
   inputs = rand(1,step);
   finalimg = startpattern;

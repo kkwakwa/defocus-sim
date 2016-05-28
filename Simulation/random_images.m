@@ -1,4 +1,12 @@
 function random_images(pattern_number, total_photons, step)
+%generate a bunch of images of a pattern built up by adding random photons to a
+%probability grid.
+%Useful as a validation tool and for making pretty pictures
+%Inputs:
+%pattern_number: which pattern I want to use
+%total_photons: total number of photons to add to the image
+%step: how many photons between images
+
   r2deg = 57.2957795;
   photons = 0;
   [z,NA,n0,n,n1,d0,d,d1,lamem,mag,focus,atf,ring,pixel,nn,be_res,al_res,pic]...
