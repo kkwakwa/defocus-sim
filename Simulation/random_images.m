@@ -1,4 +1,4 @@
-function random_images(pattern_number, total_photons, photons,step)
+function random_images(pattern_number, total_photons, step)
   r2deg = 57.2957795;
   
   [z,NA,n0,n,n1,d0,d,d1,lamem,mag,focus,atf,ring,pixel,nn,be_res,al_res,pic]...
