@@ -15,8 +15,8 @@ function [z,NA,n0,n,n1,d0,d,d1,lamem,mag,focus,atf,ring,pixel,nn,be_res,al_res,p
   ring = []; 
   pixel = 10; 
   pic = 0;
-  be_res = [5];
-  al_res = [5];
+  be_res = [15];
+  al_res = [15];
   nn = [10];
   
 endfunction
