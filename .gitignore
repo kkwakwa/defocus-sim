@@ -1,2 +1,4 @@
 *.asv
 *.png
+*.txt
+octave-workspace
