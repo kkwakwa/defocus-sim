@@ -18,7 +18,13 @@ function simulate_pattern(total_photons, step, noise, runs)
   outfile=sprintf('Simulation/results/simulation_%i_%i_%i_%i-%i.txt',...
           [1900+today.year;today.mon;today.mday;today.hour;today.min]);
   linfile = fopen(outfile,'w');
-  fprintf(linfile, 'photons \t theta \t phi\n');
+  %file header information
+  fprintf(linfile,'z=%i\nNA=%d\nn0=%d\nn=%d\nn1=%d\nd=%d\nlamem=%d\n',...
+          [z;NA;n0;n;n1;d;lamem]);
+  fprintf(linfile,'mag=%i\nfocus=%i\npixel=%i\nnn=%i\nbe_res=%i\n',...
+          [mag;focus;pixel;nn;be_res]);
+  fprintf(linfile,'al_res=%i\nnoise=%i\n\n',[al_res;noise]);
+  fprintf(linfile,'photons \t theta \t phi\n');
   for pattern_no = 1:maplength
     theta = round(model.theta(pattern_no) * r2deg);
     phi = round(model.phi(pattern_no) * r2deg);
